@@ -141,5 +141,17 @@ def create_math_worksheet(operation, max_digits_op1, max_digits_op2, filename="m
     doc.save(filename)
     print(f"Worksheet saved to {filename}")
 
-# Example usage:
-create_math_worksheet(operation="divide", max_digits_op1=3, max_digits_op2=2)
+
+# Integrate with Streamlit
+import streamlit as st
+st.title("Math Worksheet Generator")
+
+operation = st.selectbox("Choose Operation", ["add", "subtract", "multiply", "divide"])
+digits_op1 = st.slider("Max Digits for Operand 1", 1, 4, 2)
+digits_op2 = st.slider("Max Digits for Operand 2", 1, 4, 2)
+
+if st.button("Generate Worksheet"):
+    filename = "worksheet.docx"
+    create_math_worksheet(operation, digits_op1, digits_op2, filename)
+    with open(filename, "rb") as f:
+        st.download_button("Download Worksheet", f, file_name=filename)
